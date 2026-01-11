@@ -2,6 +2,7 @@ import { useState, ChangeEvent, FormEvent } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Plus, Zap, ChevronRight, AlertCircle, CheckCircle, Clock, Calendar, Target, Layers } from "lucide-react";
+import { ProcessFormData } from "./Scheduler";
 
 interface Process {
   name: string;
@@ -11,12 +12,12 @@ interface Process {
   queueLevel: string;
   timeQuantum: string;
 }
-
 interface ProcessFormProps {
-  processes: Process[];
-  addProcess: (process: Process) => void;
+  processes: ProcessFormData[];
+  addProcess: (process: ProcessFormData) => void;
   algorithm: string;
 }
+
 
 interface AlgorithmConfig {
   needsPriority?: boolean;

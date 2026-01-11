@@ -1,15 +1,10 @@
-interface Process {
-  name: string;
-  burstTime: number;
-  arrivalTime: number;
-  priority?: string;
-  queueLevel?: string;
-  timeQuantum?: string;
-}
+import { ProcessDetailsData } from "./Scheduler";
+
+
 
 interface ProcessDetailsProps {
-  processes: Process[];
-  setProcesses: (processes: Process[]) => void;
+ processes: ProcessDetailsData[];
+  setProcesses: (processes: ProcessDetailsData[]) => void;
 }
 
 const ProcessDetails = ({ processes, setProcesses }: ProcessDetailsProps) => {

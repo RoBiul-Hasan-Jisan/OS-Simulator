@@ -8,6 +8,12 @@ interface Process {
   endTime?: number;
 }
 
+// Create a separate interface for GanttChart entries with required start/end times
+interface GanttChartEntry extends Process {
+  startTime: number;
+  endTime: number;
+}
+
 interface SimulationState {
   initialized: boolean;
   executingProcess: Process | null;
@@ -37,7 +43,8 @@ const SJF = ({ processes }: SJFProps) => {
   const [pendingProcesses, setPendingProcesses] = useState<Process[]>([]);
   const [completedProcesses, setCompletedProcesses] = useState<Process[]>([]);
   const [currentProcess, setCurrentProcess] = useState<Process | null>(null);
-  const [ganttChart, setGanttChart] = useState<Process[]>([]);
+  // Change ganttChart state type to GanttChartEntry[]
+  const [ganttChart, setGanttChart] = useState<GanttChartEntry[]>([]);
   const [comparingProcess, setComparingProcess] = useState<Process | null>(null);
   const [fadeOutProcess, setFadeOutProcess] = useState<string | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
@@ -148,10 +155,14 @@ const SJF = ({ processes }: SJFProps) => {
         await continueExecution();
         
         if (isSimulating && !isPaused) {
+          // Fix: Ensure we're adding a GanttChartEntry with required number values
+          const startTime = simulationState.processStartTime || 0;
+          const endTime = simulationState.processEndTime || 0;
+          
           setGanttChart(prev => [...prev, {
             ...process,
-            startTime: simulationState.processStartTime,
-            endTime: simulationState.processEndTime
+            startTime,
+            endTime
           }]);
           setCompletedProcesses(prev => [...prev, process]);
           setPendingProcesses(prev => prev.filter(p => p.name !== process.name));
@@ -263,6 +274,7 @@ const SJF = ({ processes }: SJFProps) => {
       
       if (!isSimulating || isPaused) return;
       
+      // Fix: Add proper GanttChartEntry with required startTime and endTime
       setGanttChart(prev => [...prev, {
         ...nextProcess,
         startTime,

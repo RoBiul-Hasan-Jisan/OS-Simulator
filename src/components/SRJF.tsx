@@ -1,16 +1,11 @@
 import { useState, useEffect } from "react";
+import { Process as SchedulerProcess } from "./Scheduler";
 
 // Define interfaces for type safety
-interface Process {
-  name: string;
+interface ExtendedProcess extends Omit<SchedulerProcess, 'burstTime' | 'arrivalTime' | 'priority'> {
   burstTime: string;
   arrivalTime: string;
   priority: string;
-  queueLevel: string;
-  timeQuantum: string;
-}
-
-interface ExtendedProcess extends Process {
   remainingTime: number;
   originalBurstTime: number;
   id: string;
@@ -39,7 +34,7 @@ interface ProcessMetrics {
 }
 
 interface SRJFProps {
-  processes: Process[];
+  processes: SchedulerProcess[];
 }
 
 // Define colors as a Record type for better type safety
@@ -73,8 +68,11 @@ const SRJF = ({ processes }: SRJFProps) => {
     const processesWithRemaining: ExtendedProcess[] = processes.map((p, index) => {
       const newProcess: ExtendedProcess = {
         ...p,
-        remainingTime: parseInt(p.burstTime),
-        originalBurstTime: parseInt(p.burstTime),
+        arrivalTime: p.arrivalTime.toString(),
+        burstTime: p.burstTime.toString(),
+        priority: p.priority.toString(),
+        remainingTime: p.burstTime,
+        originalBurstTime: p.burstTime,
         id: `${p.name}-${index}` // Add a unique ID to each process
       };
       console.log(`Process ${index}:`, newProcess);
@@ -379,7 +377,7 @@ const SRJF = ({ processes }: SRJFProps) => {
 
     processes.forEach(proc => {
       const processName = proc.name;
-      const arrivalTime = parseInt(proc.arrivalTime);
+      const arrivalTime = proc.arrivalTime;
 
       // Find all gantt chart segments for this process
       const segments = ganttChart.filter(item => item.name === processName && item.endTime !== null);
@@ -393,7 +391,7 @@ const SRJF = ({ processes }: SRJFProps) => {
       const turnaroundTime = completionTime - arrivalTime;
 
       // Calculate waiting time (turnaround time - burst time)
-      const burstTime = parseInt(proc.burstTime);
+      const burstTime = proc.burstTime;
       const waitingTime = turnaroundTime - burstTime;
 
       // Calculate response time (start time of first segment - arrival time)
@@ -675,7 +673,7 @@ const SRJF = ({ processes }: SRJFProps) => {
                 {/* Average metrics row */}
                 {Object.keys(metrics).length > 0 && (
                   <tr className="bg-gray-900 font-semibold">
-                    <td className="py-2 px-4 border border-white text-right" colSpan="4">Average</td>
+                    <td className="py-2 px-4 border border-white text-right" >Average</td>
                     <td className="py-2 px-4 border border-white text-center">
                       {(Object.values(metrics).reduce((sum, data) => sum + data.turnaroundTime, 0) / Object.keys(metrics).length).toFixed(2)}
                     </td>

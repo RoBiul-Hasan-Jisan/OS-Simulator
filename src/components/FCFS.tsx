@@ -134,11 +134,16 @@ const FCFS = ({ processes }: FCFSProps) => {
 
   // Add new processes during simulation
   const addNewProcesses = (newProcesses: Process[]) => {
-    const filteredNewProcesses = newProcesses.filter(newProcess => 
-      newProcess.arrivalTime >= currentTime &&
-      !pendingProcesses.some(p => p.name === newProcess.name) &&
-      !completedProcesses.some(p => p.name === newProcess.name)
-    );
+    const filteredNewProcesses = newProcesses.filter(newProcess => {
+      // FIX: Convert arrivalTime to number before comparison
+      const arrivalTimeNum = typeof newProcess.arrivalTime === 'string' 
+        ? parseInt(newProcess.arrivalTime, 10) 
+        : newProcess.arrivalTime;
+      
+      return arrivalTimeNum >= currentTime &&
+        !pendingProcesses.some(p => p.name === newProcess.name) &&
+        !completedProcesses.some(p => p.name === newProcess.name)
+    });
 
     if (filteredNewProcesses.length > 0) {
       setPendingProcesses(prev => [...prev, ...filteredNewProcesses]);
@@ -157,6 +162,11 @@ const FCFS = ({ processes }: FCFSProps) => {
     return baseDelay / animationSpeed;
   };
 
+  // Helper function to safely convert time values to numbers
+  const toNumber = (value: string | number): number => {
+    return typeof value === 'string' ? parseInt(value, 10) : value;
+  };
+
   // Handle simulation steps
   useEffect(() => {
     if (!isSimulating || isPaused || pendingProcesses.length === 0) return;
@@ -165,7 +175,8 @@ const FCFS = ({ processes }: FCFSProps) => {
       // If we're in the middle of executing a process, continue from where we left off
       if (simulationState.executingProcess) {
         const process = simulationState.executingProcess;
-        const remainingTime = (simulationState.processEndTime || 0) - currentTime;
+        // FIX: Remove unused variable - calculate it only if needed
+        // const remainingTime = (simulationState.processEndTime || 0) - currentTime;
         
         // Continue executing the current process
         setAnimatingTimeJump(true);
@@ -227,7 +238,7 @@ const FCFS = ({ processes }: FCFSProps) => {
         await new Promise(resolve => setTimeout(resolve, getAnimationDelay(500)));
         
         // If this process has earlier arrival time, update minProcess
-        if (parseInt(processToCompare.arrivalTime.toString()) < parseInt(minProcess.arrivalTime.toString())) {
+        if (toNumber(processToCompare.arrivalTime) < toNumber(minProcess.arrivalTime)) {
           minProcess = processToCompare;
           setCurrentProcess(minProcess);
           
@@ -251,8 +262,8 @@ const FCFS = ({ processes }: FCFSProps) => {
       setFadeOutProcess(nextProcess.name);
       
       // Calculate process timing
-      const startTime = Math.max(currentTime, parseInt(minProcess.arrivalTime.toString()));
-      const endTime = startTime + parseInt(minProcess.burstTime.toString());
+      const startTime = Math.max(currentTime, toNumber(minProcess.arrivalTime));
+      const endTime = startTime + toNumber(minProcess.burstTime);
       
       // Animate time jump if necessary
       if (startTime > currentTime) {
@@ -609,8 +620,8 @@ const FCFS = ({ processes }: FCFSProps) => {
               </thead>
               <tbody>
                 {ganttChart.map(p => {
-                  const turnaroundTime = p.endTime - parseInt(p.arrivalTime.toString());
-                  const waitingTime = p.startTime - parseInt(p.arrivalTime.toString());
+                  const turnaroundTime = p.endTime - toNumber(p.arrivalTime);
+                  const waitingTime = p.startTime - toNumber(p.arrivalTime);
                   
                   return (
                     <tr key={p.name}>
@@ -630,10 +641,10 @@ const FCFS = ({ processes }: FCFSProps) => {
                   <tr className="bg-gray-900 font-semibold">
                     <td className="py-2 px-4 border border-white text-right" colSpan={5}>Average</td>
                     <td className="py-2 px-4 border border-white text-center">
-                      {(ganttChart.reduce((sum, p) => sum + (p.endTime - parseInt(p.arrivalTime.toString())), 0) / ganttChart.length).toFixed(2)}
+                      {(ganttChart.reduce((sum, p) => sum + (p.endTime - toNumber(p.arrivalTime)), 0) / ganttChart.length).toFixed(2)}
                     </td>
                     <td className="py-2 px-4 border border-white text-center">
-                      {(ganttChart.reduce((sum, p) => sum + (p.startTime - parseInt(p.arrivalTime.toString())), 0) / ganttChart.length).toFixed(2)}
+                      {(ganttChart.reduce((sum, p) => sum + (p.startTime - toNumber(p.arrivalTime)), 0) / ganttChart.length).toFixed(2)}
                     </td>
                   </tr>
                 )}
