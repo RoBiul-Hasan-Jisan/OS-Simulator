@@ -1,89 +1,122 @@
-# React + Vite + TypeScript Template (react-vite-ui)
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Dan5py/react-vite-ui/blob/main/LICENSE)
+#  CPU Scheduling Simulator
 
-A React + Vite template powered by shadcn/ui.
+A comprehensive, interactive, and responsive web application to simulate and visualize various CPU scheduling algorithms. Built with **React**, **TypeScript**, and **Tailwind CSS**.
 
-> [!NOTE]
-> This template uses Tailwind v3, if you want to use Tailwind v4, check the [tw4 branch](https://github.com/dan5py/react-vite-shadcn-ui/tree/tw4).
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![React](https://img.shields.io/badge/React-18-61dafb?logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?logo=typescript)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.3-38bdf8?logo=tailwindcss)
 
-## 🎉 Features
+##  Overview
 
-- **React** - A JavaScript library for building user interfaces.
-- **Vite** - A fast, opinionated frontend build tool.
-- **TypeScript** - A typed superset of JavaScript that compiles to plain JavaScript.
-- **Tailwind CSS** - A utility-first CSS framework. (`v3`)
-- **Tailwind Prettier Plugin** - A Prettier plugin for formatting Tailwind CSS classes.
-- **ESLint** - A pluggable linting utility for JavaScript and TypeScript.
-- **PostCSS** - A tool for transforming CSS with JavaScript.
-- **Autoprefixer** - A PostCSS plugin to parse CSS and add vendor prefixes.
-- **shadcn/ui** - Beautifully designed components that you can copy and paste into your apps.
+This simulator provides a visual interface for understanding how Operating Systems manage process scheduling. Users can input process data (Arrival Time, Burst Time, Priority, etc.) and visualize the execution flow via Gantt charts and performance metrics.
 
-## ⚙️ Prerequisites
+It is designed to be a learning tool for Computer Science students and enthusiasts studying Operating Systems.
 
-Make sure you have the following installed on your development machine:
+##  Features
 
-- Node.js (version 22 or above)
-- pnpm (package manager)
+- **6 Major Algorithms Supported:**
+  - First Come First Serve (**FCFS**)
+  - Shortest Job First (**SJF**)
+  - Shortest Remaining Time First (**SRTF/SRJF**)
+  - Round Robin (**RR**) with custom Time Quantum
+  - Priority Scheduling (**Non-Preemptive**)
+  - Priority Scheduling (**Preemptive**)
 
-## 🚀 Getting Started
+- **Modern UI/UX:**
+  - **Fully Responsive:** Mobile-first design that adapts to tablets and desktops.
+  - **Dark/Light Mode:** Seamless theme switching.
+  - **Interactive Forms:** Real-time validation and dynamic inputs based on the selected algorithm.
 
-Follow these steps to get started with the react-vite-ui template:
+- **Analysis & Visualization:**
+  - **Gantt Charts:** Visual representation of process execution timeline.
+  - **Performance Metrics:** Automatic calculation of Waiting Time, Turnaround Time, and averages.
+  - **Documentation:** Integrated docs explaining the theory behind each algorithm.
 
-1. Clone the repository:
+##  Tech Stack
 
-   ```bash
-   git clone https://github.com/dan5py/react-vite-ui.git
-   ```
+- **Frontend:** React.js
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **Icons & UI:** React Icons, Headless UI (optional)
+- **Routing:** React Router DOM
+- **Notifications:** React Toastify
 
-2. Navigate to the project directory:
+##  Getting Started
 
-   ```bash
-   cd react-vite-ui
-   ```
+Follow these steps to run the project locally.
 
-3. Install the dependencies:
+### Prerequisites
+Make sure you have [Node.js](https://nodejs.org/) installed on your machine.
 
-   ```bash
-   pnpm install
-   ```
+### Installation
 
-4. Start the development server:
+1. **Clone the repository**
+   ``` bash
+   git clone https://github.com/RoBiul-Hasan-Jisan/OS-Simulator
+   cd cpu-scheduler-simulator
+    ```
+   ----
 
-   ```bash
-   pnpm dev
-   ```
+## Usage Guide
 
-## 📜 Available Scripts
+Select an Algorithm: Choose one of the 6 scheduling algorithms from the top dropdown menu.
 
-- pnpm dev - Starts the development server.
-- pnpm build - Builds the production-ready code.
-- pnpm lint - Runs ESLint to analyze and lint the code.
-- pnpm preview - Starts the Vite development server in preview mode.
+**Add Processes:**
 
-## 📂 Project Structure
+Enter Arrival Time and Burst Time.
 
-The project structure follows a standard React application layout:
+If required by the algorithm, enter Priority or Time Quantum.
 
-```python
-react-vite-ui/
-  ├── node_modules/      # Project dependencies
-  ├── public/            # Public assets
-  ├── src/               # Application source code
-  │   ├── components/    # React components
-  │   │   └── ui/        # shadc/ui components
-  │   ├── styles/        # CSS stylesheets
-  │   ├── lib/           # Utility functions
-  │   ├── App.tsx        # Application entry point
-  │   └── index.tsx      # Main rendering file
-  ├── eslint.config.js     # ESLint configuration
-  ├── index.html         # HTML entry point
-  ├── postcss.config.js  # PostCSS configuration
-  ├── tailwind.config.ts # Tailwind CSS configuration
-  ├── tsconfig.json      # TypeScript configuration
-  └── vite.config.ts     # Vite configuration
+Click "Add Process".
+
+**View Results:**
+
+The Process Queue table shows the current state of processes.
+
+The Simulation section displays the Gantt Chart and calculated time metrics.
+
+**Read Documentation:** Click the "Docs" button in the header to learn about the logic behind the currently selected algorithm.
+
+# Project Structure
+``` bash
+src/
+├── components/
+│   ├── FCFS.tsx            # Logic & View for FCFS
+│   ├── SJF.tsx             # Logic & View for SJF
+│   ├── RR.tsx              # Logic & View for Round Robin
+│   ├── ProcessForm.tsx     # Input form component
+│   └── ...                 # Other algorithm components
+├── pages/
+│   ├── Scheduler.tsx       # Main dashboard layout
+│   └── Documentation.tsx   # Documentation pages
+├── App.tsx                 # Main application entry
+└── main.tsx                # DOM rendering
+
 ```
 
+## Contributing
+
+Contributions are welcome! If you have suggestions for improvements or want to add a new algorithm:
+
+Fork the project.
+
+- Create your feature branch (git checkout -b feature/  AmazingFeature).
+
+- Commit your changes (git commit -m 'Add some AmazingFeature').
+
+- Push to the branch (git push origin feature/AmazingFeature).
+
+- Open a Pull Request.
+
+----
 ## 📄 License
 
-This project is licensed under the MIT License. See the [LICENSE](https://choosealicense.com/licenses/mit/) file for details.
+This project is licensed under the MIT License. See the [LICENSE](https://choosealicense.com/licenses/mit/) file for details
+
+----
+Made with ❤️ by **Robiul Hasan Jisan** 
+
+----
+
