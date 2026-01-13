@@ -9,6 +9,7 @@ import ProcessDetails from "./ProcessDetails";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SJF from "./SJF";
+import { Link } from "react-router-dom";
 
 // Base interface that all components should extend
 interface BaseProcess {
@@ -116,7 +117,7 @@ const Scheduler = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-zinc-950">
+    <div className="min-h-screen bg-white dark:bg-zinc-950 transition-colors duration-300">
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         
@@ -208,24 +209,26 @@ const Scheduler = () => {
         toastClassName="backdrop-blur-xl"
       />
 
-      {/* Minimal Header */}
-      <header className="sticky top-0 z-50 glass-card">
-        <div className="max-w-[1400px] mx-auto px-8 py-5">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-8">
+      {/* Header */}
+      <header className="sticky top-0 z-50 glass-card border-b border-zinc-200/50 dark:border-zinc-800/50 backdrop-blur-xl bg-white/70 dark:bg-zinc-950/70">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8 py-4 md:py-5">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0">
+            {/* Title Section */}
+            <div className="flex items-center gap-8 text-center md:text-left w-full md:w-auto justify-center md:justify-start">
               <div>
-                <h1 className="text-2xl font-semibold text-zinc-900 dark:text-white tracking-tight">
+                <h1 className="text-xl md:text-2xl font-semibold text-zinc-900 dark:text-white tracking-tight">
                   CPU Scheduler
                 </h1>
-                <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-0.5">
-                  Process scheduling simulation and analysis
+                <p className="text-xs md:text-sm text-zinc-500 dark:text-zinc-400 mt-0.5">
+                  Process scheduling simulation
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
+            {/* Controls Section */}
+            <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
               <select
-                className="h-10 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white rounded-lg px-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all cursor-pointer min-w-[280px]"
+                className="h-10 w-full sm:w-auto md:min-w-[280px] bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white rounded-lg px-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all cursor-pointer"
                 value={algorithm}
                 onChange={handleAlgorithmChange}
               >
@@ -236,21 +239,33 @@ const Scheduler = () => {
                 ))}
               </select>
 
-              <button
-                onClick={() => setDarkMode(!darkMode)}
-                className="h-10 px-4 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white text-sm font-medium transition-colors"
-              >
-                {darkMode ? 'Light' : 'Dark'}
-              </button>
+              <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
+                <Link
+                  to="/doc"
+                  className="flex-1 sm:flex-none text-center px-4 py-2 text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors whitespace-nowrap"
+                >
+                  Docs
+                </Link>
+
+                <button
+                  onClick={() => setDarkMode(!darkMode)}
+                  className="flex-1 sm:flex-none h-10 px-4 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white text-sm font-medium transition-colors"
+                >
+                  {darkMode ? 'Light' : 'Dark'}
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-[1400px] mx-auto px-8 py-10">
-        {/* Metrics Dashboard */}
-        <div className="grid grid-cols-4 gap-4 mb-10">
+      <main className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8 py-6 md:py-10">
+        
+        {/* Metrics Dashboard - Responsive Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8 md:mb-10">
+          
+          {/* Card 1: Algorithm */}
           <div className="metric-card bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-zinc-200 dark:border-zinc-800 min-h-[140px] flex flex-col">
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
@@ -267,6 +282,7 @@ const Scheduler = () => {
             </div>
           </div>
 
+          {/* Card 2: Queue Size */}
           <div className="metric-card bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-zinc-200 dark:border-zinc-800 min-h-[140px] flex flex-col">
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
@@ -283,6 +299,7 @@ const Scheduler = () => {
             </div>
           </div>
 
+          {/* Card 3: Status */}
           <div className="metric-card bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-zinc-200 dark:border-zinc-800 min-h-[140px] flex flex-col">
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
@@ -300,6 +317,7 @@ const Scheduler = () => {
             </div>
           </div>
 
+          {/* Card 4: Actions */}
           <div className="metric-card bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-zinc-200 dark:border-zinc-800 min-h-[140px] flex flex-col justify-between">
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
@@ -316,8 +334,9 @@ const Scheduler = () => {
           </div>
         </div>
 
-        {/* Workspace */}
-        <div className="grid grid-cols-2 gap-6 mb-10">
+        {/* Workspace - Responsive Grid (Stack on mobile, 2 cols on desktop) */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+          
           {/* Process Input */}
           <div className="bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
             <div className="px-6 py-5 border-b border-zinc-200 dark:border-zinc-800">
@@ -351,7 +370,7 @@ const Scheduler = () => {
                 </div>
               </div>
             </div>
-            <div className="p-6">
+            <div className="p-6 overflow-x-auto"> {/* Added overflow-x-auto for table responsiveness */}
               <ProcessDetails 
                 processes={processDetailsData} 
                 setProcesses={updateProcesses} 
@@ -371,7 +390,7 @@ const Scheduler = () => {
                 Gantt chart visualization and performance metrics
               </p>
             </div>
-            <div className="p-6">
+            <div className="p-6 overflow-x-auto"> {/* Added overflow-x-auto for charts */}
               {algorithm === "FCFS" && <FCFS processes={processes} />}
               {algorithm === "SJF" && <SJF processes={processes} />}
               {algorithm === "SRTF" && <SRJF processes={processes} />}
@@ -381,7 +400,7 @@ const Scheduler = () => {
             </div>
           </div>
         ) : (
-          <div className="bg-white dark:bg-zinc-900 rounded-2xl border-2 border-dashed border-zinc-200 dark:border-zinc-800 p-20">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl border-2 border-dashed border-zinc-200 dark:border-zinc-800 p-10 md:p-20">
             <div className="text-center max-w-md mx-auto">
               <div className="w-16 h-16 rounded-2xl bg-zinc-100 dark:bg-zinc-800 mx-auto mb-6 flex items-center justify-center">
                 <div className="w-8 h-8 border-2 border-zinc-300 dark:border-zinc-600 rounded" />
@@ -398,9 +417,9 @@ const Scheduler = () => {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-zinc-200 dark:border-zinc-800 mt-20">
-        <div className="max-w-[1400px] mx-auto px-8 py-8">
-          <div className="flex items-center justify-between text-sm text-zinc-500 dark:text-zinc-400">
+      <footer className="border-t border-zinc-200 dark:border-zinc-800 mt-10 md:mt-20">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8 py-8">
+          <div className="flex flex-col md:flex-row items-center justify-between text-sm text-zinc-500 dark:text-zinc-400 gap-4 text-center md:text-left">
             <p>CPU Scheduling Algorithm Simulator</p>
             <p>Operating Systems · Process Management</p>
           </div>

@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
-import { Star, Github, Sun, Moon, Linkedin, Heart, Code } from 'lucide-react';
+import { Star, Github, Linkedin, Heart, Code } from 'lucide-react';
 
 const GitHubFooter: React.FC = () => {
-  const [isDarkTheme, setIsDarkTheme] = useState<boolean>(true);
+  const [] = useState<boolean>(true);
   
-  const toggleTheme = (): void => {
-    setIsDarkTheme(!isDarkTheme);
-  };
 
   return (
     <footer className="w-full relative mt-16">
@@ -90,16 +87,7 @@ const GitHubFooter: React.FC = () => {
                 </a>
                 
                 {/* Theme toggle button */}
-                <button 
-                  onClick={toggleTheme}
-                  className="p-3 rounded-xl bg-gradient-to-br from-indigo-600/40 to-purple-600/40 border border-indigo-400/30 hover:border-indigo-400/50 transition-all hover:scale-110 shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/40"
-                  aria-label="Toggle theme"
-                >
-                  {isDarkTheme ? 
-                    <Sun size={18} className="text-yellow-300" /> : 
-                    <Moon size={18} className="text-indigo-300" />
-                  }
-                </button>
+               
               </div>
             </div>
           </div>
